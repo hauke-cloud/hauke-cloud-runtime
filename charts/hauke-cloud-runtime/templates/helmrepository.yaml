@@ -1,0 +1,15 @@
+{{- range $chartName, $chart := omit .Values "general" }}
+{{- with $chart -}}
+{{- if .enabled }}
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: {{ .chart.name | default .name }}
+  namespace: {{ .namespace }}
+spec:
+  type: {{ .repository.type | default "default" }}
+  interval: {{ .repository.interval | default "5m" }}
+  url: {{ .repository.url }}
+{{- end }}
+{{- end }}
+{{- end }}

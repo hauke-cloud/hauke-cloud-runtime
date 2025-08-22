@@ -60,36 +60,3 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
-
-{{- define "general.targetCluster" }}
-  {{- .Values.general.targetCluster | required "A value for general.targetCluster is required" }}
-{{- end }}
-
-{{- define "general.project" }}
-  {{- .Values.general.project | required "A Value for general.project is required" }}
-{{- end }}
-
-{{- define "application.name" }}
-  {{- .name | required "a name is required for the application to be deployed"}}
-{{- end }}
-
-{{- define "application.namespace" }}
-  {{- .namespace | required "a namespace is required for the application to be deployed"}}
-{{- end }}
-
-{{- define "application.source" }}
-  {{- $releaseName := dict "releaseName" (include "application.name" . ) }}
-  {{- if .source.chart }}
-    {{- if .source.helm }}
-        {{- $helmsource := dict "helm" (merge $releaseName .source.helm) }}
-        {{- $source := merge $helmsource .source }}
-        {{- toYaml $source }}
-    {{- else }}
-        {{- $helmsource := dict "helm" $releaseName  }}
-        {{- $source := merge $helmsource .source }}
-        {{- toYaml $source }}
-    {{- end }}
-  {{- else }}
-    {{- toYaml .source }}
-  {{- end }}
-{{- end }}

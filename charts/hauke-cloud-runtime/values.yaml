@@ -6,80 +6,76 @@
 nameOverride: ""
 fullnameOverride: ""
 
-# General
-general:
-  targetCluster: in-cluster
-  project: default
-
 # Cert Manager
 certManager:
   name: cert-manager
   namespace: cert-manager
   enabled: true
-  source:
-    repoURL: https://charts.jetstack.io
-    targetRevision: 1.18.2
-    chart: cert-manager
-    helm:
-      values: |
-        resources:
-          requests:
-            cpu: 50m
-            memory: 64Mi
-          limits:
-            memory: 96Mi
-        cainjector:
-          resources:
-            requests:
-              cpu: 50m
-              memory: 96Mi
-            limits:
-              memory: 96Mi
-        webhook:
-          resources:
-            requests:
-              cpu: 50m
-              memory: 96Mi
-            limits:
-              memory: 96Mi
-        startupapicheck:
-          resources:
-            requests:
-              cpu: 50m
-              memory: 96Mi
-            limits:
-              memory: 96Mi
-        crds:
-          enabled: true
+  chart:
+    name: cert-manager
+    version: 1.18.2
+  repository:
+    name: jetstack
+    url: https://charts.jetstack.io
+  values:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        memory: 96Mi
+    cainjector:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 96Mi
+        limits:
+          memory: 96Mi
+    webhook:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 96Mi
+        limits:
+          memory: 96Mi
+    startupapicheck:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 96Mi
+        limits:
+          memory: 96Mi
+    crds:
+      enabled: true
 
 # External Secrets
 externalSecrets:
   name: external-secrets
   namespace: external-secrets
   enabled: true
-  source:
-    repoURL: https://charts.external-secrets.io
-    targetRevision: 0.16.2
-    chart: external-secrets
-    helm:
-      values: |
-        resources:
-          requests:
-            cpu: 250m
-            memory: 384Mi
-          limits:
-            memory: 512Mi
-        webhook:
-          resources:
-            requests:
-              cpu: 50m
-              memory: 96Mi
-            limits:
-              memory: 128Mi
-        certController:
-          resources:
-            requests:
-              cpu: 50m
-              memory: 96Mi
-            limits:
-              memory: 96Mi
+  chart:
+    name: external-secrets
+    version: 0.16.2
+  repository:
+    url: https://charts.external-secrets.io
+  values:
+    resources:
+      requests:
+        cpu: 250m
+        memory: 384Mi
+      limits:
+        memory: 512Mi
+    webhook:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 96Mi
+        limits:
+          memory: 128Mi
+    certController:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 96Mi
+        limits:
+          memory: 96Mi
