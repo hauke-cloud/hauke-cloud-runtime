@@ -17,7 +17,7 @@ spec:
         name: {{ .chart.name | default .name }}
       version: {{ .chart.version }}
   {{- with .values }}
-  values: |
+  values:
   {{- toYaml . | nindent 4 }}
   {{- end }}
   interval: {{ .chart.interval | default "5m" }}
