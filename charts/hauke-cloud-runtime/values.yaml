@@ -79,3 +79,15 @@ externalSecrets:
           memory: 96Mi
         limits:
           memory: 96Mi
+
+# Nginx Ingress Controller
+ingress:
+  name: ingress
+  namespace: ingress
+  enabled: true
+  chart:
+    name: ingress-nginx
+    version: 4.13.1
+  repository:
+    url: https://kubernetes.github.io/ingress-ngin
+  values: {}
