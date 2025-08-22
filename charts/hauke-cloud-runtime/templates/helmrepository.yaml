@@ -1,6 +1,7 @@
 {{- range $chartName, $chart := omit .Values "general" }}
 {{- with $chart -}}
 {{- if .enabled }}
+---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:

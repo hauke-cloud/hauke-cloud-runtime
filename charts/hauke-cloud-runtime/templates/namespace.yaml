@@ -1,6 +1,7 @@
 {{- range $chartName, $chart := omit .Values "general" }}
 {{- with $chart -}}
 {{- if .enabled }}
+---
 apiVersion: v1
 kind: Namespace
 metadata:
