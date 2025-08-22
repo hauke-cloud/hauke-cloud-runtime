@@ -1,0 +1,6 @@
+apiVersion: v2
+name: hauke-cloud-runtime
+description: Umbrella chart which provides all basic Kubernetes cluster services
+type: application
+version: 0.0.1
+appVersion: 0.0.1

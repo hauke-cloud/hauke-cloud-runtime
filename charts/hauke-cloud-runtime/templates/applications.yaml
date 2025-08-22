@@ -1,0 +1,25 @@
+{{- range $chartName, $chart := omit .Values "general" }}
+{{- with $chart -}}
+{{- if .enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: '{{ include "application.name" . }}'
+spec:
+  project: {{ include "general.project" $ }}
+  source:
+    {{- include "application.source" . | nindent 4 }}
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+     - CreateNamespace=true
+     - ServerSideApply=true
+  destination:
+    name: '{{ include "general.targetCluster" $ }}'
+    namespace: {{ include "application.namespace" . }}
+---
+{{- end }}
+{{- end }}
+{{- end }}
