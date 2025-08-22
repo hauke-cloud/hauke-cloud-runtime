@@ -5,13 +5,19 @@
 <a href="https://github.com/hauke-cloud/readme-management" target="_blank"><img src="https://img.shields.io/badge/template-helm-orange" alt="Repository type - helm" style="display: block;" /></a>
 
 
-# Helm Chart Template
+# hauke.cloud runtime
 
 
 <img src="https://raw.githubusercontent.com/hauke-cloud/.github/main/resources/img/organisation-logo-small.png" alt="hauke.cloud logo" width="109" height="123" align="right">
 
 
-Template repository for Helm charts.
+Helm chart to various basic components like ingress controller, cert-manager, sealed-secrets, etc.
+
+This chart offers you:
+- All basic services for a basic Kubernetes cluster
+- Regular updates for each component
+- Hardening
+- Zero-Trust approach
 
 
 
@@ -25,7 +31,7 @@ To get started, you need to clone the repository. Follow the steps below:
 Use the following command to clone the repository:
 
 ```bash
-git clone https://github.com/hauke-cloud/template-helm-chart.git
+git clone https://github.com/hauke-cloud/hauke-cloud-runtime.git
 ```
 
 ### 2. Navigate to the repository directory
@@ -33,7 +39,7 @@ git clone https://github.com/hauke-cloud/template-helm-chart.git
 Once the repository is cloned, navigate to the directory:
 
 ```bash
-cd template-helm-chart
+cd hauke-cloud-runtime
 ```
 
 ### 3. Check the content
@@ -55,13 +61,13 @@ quite simple. You can run the following command to template and install the char
 #### Template the Helm chart
 
 ```bash
-helm template oci://ghcr.io/hauke-cloud/charts/template-helm-chart
+helm template oci://ghcr.io/hauke-cloud/charts/hauke-cloud-runtime
 ```
 
 #### Deploy the Helm chart
 
 ```bash
-helm install template-helm-chart oci://ghcr.io/hauke-cloud/charts/template-helm-chart --version 1.0.0
+helm install hauke-cloud-runtime oci://ghcr.io/hauke-cloud/charts/hauke-cloud-runtime --version 1.0.0
 ```
 
 
