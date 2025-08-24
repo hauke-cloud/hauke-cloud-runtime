@@ -52,7 +52,7 @@ certManager:
 externalSecrets:
   name: external-secrets
   namespace: external-secrets
-  enabled: true
+  enabled: false
   chart:
     name: external-secrets
     version: 0.16.2
@@ -79,6 +79,24 @@ externalSecrets:
           memory: 96Mi
         limits:
           memory: 96Mi
+
+# sealed-secrets
+sealedSecrets:
+  name: sealed-secrets
+  namespace: sealed-secrets
+  enabled: true
+  chart:
+    name: sealed-secrets
+    version: 2.17.4
+  repository:
+    url: https://bitnami-labs.github.io/sealed-secrets
+  values:
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        memory: 256Mi
 
 # Nginx Ingress Controller
 ingress:
