@@ -48,6 +48,25 @@ certManager:
     crds:
       enabled: true
 
+# External DNS
+externalDNS:
+  name: external-dns
+  namespace: external-dns
+  enabled: true
+  chart:
+    name: external-dns
+    version: 1.18.0
+  repository:
+    name: kubernetes-sigs
+    url: https://kubernetes-sigs.github.io/external-dns/
+  values:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        memory: 96Mi
+
 # External Secrets
 externalSecrets:
   name: external-secrets
