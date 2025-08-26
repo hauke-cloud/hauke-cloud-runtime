@@ -127,4 +127,11 @@ ingress:
     version: 4.13.1
   repository:
     url: https://kubernetes.github.io/ingress-nginx
-  values: {}
+  values:
+    controller:
+      watchIngressWithoutClass: true
+      ingressClassResource:
+        default: true
+      service:
+        annotations:
+          load-balancer.hetzner.cloud/location: nbg1
