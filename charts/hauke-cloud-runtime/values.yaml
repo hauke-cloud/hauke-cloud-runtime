@@ -60,6 +60,7 @@ externalDNS:
     name: kubernetes-sigs
     url: https://kubernetes-sigs.github.io/external-dns/
   values:
+    triggerLoopOnEvent: true
     resources:
       requests:
         cpu: 50m
