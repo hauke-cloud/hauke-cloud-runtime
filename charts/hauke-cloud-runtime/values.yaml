@@ -136,3 +136,13 @@ ingress:
       service:
         annotations:
           load-balancer.hetzner.cloud/location: nbg1
+
+reflector:
+  name: reflector
+  namespace: kube-system
+  enabled: true
+  chart:
+    name: reflector
+    version: 9.2.0-develop.18
+  repository:
+    url: oci://ghcr.io/emberstack/helm-charts
