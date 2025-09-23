@@ -145,4 +145,5 @@ reflector:
     name: reflector
     version: 9.2.0-develop.18
   repository:
-    url: oci://ghcr.io/emberstack/helm-charts/reflector
+    url: oci://ghcr.io/emberstack/helm-charts
+    type: oci
