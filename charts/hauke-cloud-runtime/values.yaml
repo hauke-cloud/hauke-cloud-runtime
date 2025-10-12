@@ -170,3 +170,13 @@ hetznerCSI:
     version: 2.18.0
   repository:
     url: https://charts.hetzner.cloud
+
+# Kubernetes metrics server
+metricsServer:
+  name: metrics-server
+  namespace: kube-system
+  chart:
+    name: metrics-server
+    version: 0.13.0
+  repository:
+    name: https://kubernetes-sigs.github.io/metrics-server
