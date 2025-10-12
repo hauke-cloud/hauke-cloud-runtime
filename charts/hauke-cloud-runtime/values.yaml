@@ -184,31 +184,31 @@ hetznerCSI:
             cpu: 50m
             memory: 50Mi
           limits:
-            memory: 50m
+            memory: 50Mi
         csiResizer:
           requests:
             cpu: 50m
             memory: 50Mi
           limits:
-            memory: 50m
+            memory: 50Mi
         csiProvisioner:
           requests:
             cpu: 50m
             memory: 50Mi
           limits:
-            memory: 50m
+            memory: 50Mi
         livenessProbe:
           requests:
             cpu: 50m
             memory: 50Mi
           limits:
-            memory: 50m
+            memory: 50Mi
         hcloudCSIDriver:
           requests:
             cpu: 50m
             memory: 50Mi
           limits:
-            memory: 50m
+            memory: 50Mi
     node:
       resources:
         csiNodeDriverRegistrar:
@@ -216,19 +216,19 @@ hetznerCSI:
             cpu: 50m
             memory: 50Mi
           limits:
-            memory: 50m
+            memory: 50Mi
         livenessProbe:
           requests:
             cpu: 50m
             memory: 50Mi
           limits:
-            memory: 50m
+            memory: 50Mi
         hcloudCSIDriver:
           requests:
             cpu: 50m
             memory: 50Mi
           limits:
-            memory: 50m
+            memory: 50Mi
 
 # Kubernetes metrics server
 metricsServer:
