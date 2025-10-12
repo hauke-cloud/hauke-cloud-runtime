@@ -1,6 +1,6 @@
 {{- range $chartName, $chart := omit .Values "general" }}
 {{- with $chart -}}
-{{- if and (.enabled) (.createNamespace | default true) }}
+{{- if and (.enabled) (not .skipNamespaceCreation) }}
 ---
 apiVersion: v1
 kind: Namespace
