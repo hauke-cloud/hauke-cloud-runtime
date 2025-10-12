@@ -175,6 +175,7 @@ hetznerCSI:
 metricsServer:
   name: metrics-server
   namespace: kube-system
+  enabled: true
   chart:
     name: metrics-server
     version: 0.13.0
