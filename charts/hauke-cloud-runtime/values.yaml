@@ -241,8 +241,9 @@ metricsServer:
   repository:
     name: https://kubernetes-sigs.github.io/metrics-server
   values:
-    requests:
-      cpu: 100m
-      memory: 200Mi
-    limits:
-      memory: 200Mi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 200Mi
+      limits:
+        memory: 200Mi
