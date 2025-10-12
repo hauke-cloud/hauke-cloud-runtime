@@ -279,7 +279,7 @@ cilium:
     version: 1.18.2
   repository:
     url: https://helm.cilium.io
-  value:
+  values:
     hostFirewall:
       enabled: true
     extraArgs:
