@@ -248,3 +248,86 @@ metricsServer:
         memory: 200Mi
       limits:
         memory: 200Mi
+
+# Hetzner Cloud Controller Manager
+hetznerCloudControllerManager:
+  name: hetzner-cloud-controller-manager
+  namespace: kube-system
+  skipNamespaceCreation: true
+  enabled: true
+  chart:
+    name: hcloud-cloud-controller-manager
+    version: 1.27.0
+  repository:
+    url: https://charts.hetzner.cloud
+  value:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 50Mi
+      limits:
+        memory: 50Mi
+
+# Cilium
+cilium:
+  name: cilium
+  namespace: kube-system
+  skipNamespaceCreation: true
+  enabled: true
+  chart:
+    name: cilium
+    version: 1.18.2
+  repository:
+    url: https://helm.cilium.io
+  value:
+    hostFirewall:
+      enabled: true
+    extraArgs:
+      - --direct-routing-device=eth0
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 1Gi
+    initResources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        memory: 100Mi
+    cni:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
+    certgen:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
+    envoy:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
+    operator:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
+    nodeinit:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
