@@ -125,11 +125,17 @@ ingress:
   enabled: true
   chart:
     name: ingress-nginx
-    version: 4.13.1
+    version: 4.13.3
   repository:
     url: https://kubernetes.github.io/ingress-nginx
   values:
     controller:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 90Mi
+        limits:
+          memory: 200Mi
       watchIngressWithoutClass: true
       ingressClassResource:
         default: true
@@ -170,6 +176,59 @@ hetznerCSI:
     version: 2.18.0
   repository:
     url: https://charts.hetzner.cloud
+  values:
+    controller:
+      resources:
+        csiAttacher:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            memory: 50m
+        csiResizer:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            memory: 50m
+        csiProvisioner:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            memory: 50m
+        livenessProbe:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            memory: 50m
+        hcloudCSIDriver:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            memory: 50m
+    node:
+      resources:
+        csiNodeDriverRegistrar:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            memory: 50m
+        livenessProbe:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            memory: 50m
+        hcloudCSIDriver:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            memory: 50m
 
 # Kubernetes metrics server
 metricsServer:
@@ -186,5 +245,4 @@ metricsServer:
       cpu: 100m
       memory: 200Mi
     limits:
-      cpu: 100m
       memory: 200Mi
