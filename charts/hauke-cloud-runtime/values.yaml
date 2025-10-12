@@ -180,3 +180,10 @@ metricsServer:
     version: 0.13.0
   repository:
     name: https://kubernetes-sigs.github.io/metrics-server
+  values:
+    requests:
+      cpu: 100m
+      memory: 200Mi
+    limits:
+      cpu: 100m
+      memory: 200Mi
