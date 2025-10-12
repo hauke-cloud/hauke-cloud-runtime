@@ -234,6 +234,7 @@ hetznerCSI:
 metricsServer:
   name: metrics-server
   namespace: kube-system
+  createNamespace: false
   enabled: true
   chart:
     name: metrics-server
