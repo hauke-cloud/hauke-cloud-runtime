@@ -137,10 +137,11 @@ ingress:
         annotations:
           load-balancer.hetzner.cloud/location: nbg1
 
+# Reflector
 reflector:
   name: reflector
   namespace: kube-system
-  enabled: true
+  enabled: false
   chart:
     name: reflector
     version: 9.2.0-develop.18
@@ -148,12 +149,24 @@ reflector:
     url: oci://ghcr.io/emberstack/helm-charts
     type: oci
 
+# OpenCost
 opencost:
   name: opencost
   namespace: opencost
-  enabled: true
+  enabled: false
   chart:
     name: opencost
     version: 2.3.1
   repository:
     url: https://opencost.github.io/opencost-helm-chart
+
+# Hetzner CSI
+hetznerCSI:
+  name: hetzner-csi
+  namespace: kube-system
+  enabled: false
+  chart:
+    name: hcloud-csi
+    version: 2.18.0
+  repository:
+    url: https://charts.hetzner.cloud
