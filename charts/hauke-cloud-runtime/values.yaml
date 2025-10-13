@@ -254,7 +254,7 @@ hetznerCloudControllerManager:
   name: hetzner-cloud-controller-manager
   namespace: kube-system
   skipNamespaceCreation: true
-  enabled: true
+  enabled: false
   chart:
     name: hcloud-cloud-controller-manager
     version: 1.27.0
@@ -273,7 +273,7 @@ cilium:
   name: cilium
   namespace: kube-system
   skipNamespaceCreation: true
-  enabled: true
+  enabled: false
   chart:
     name: cilium
     version: 1.18.2
