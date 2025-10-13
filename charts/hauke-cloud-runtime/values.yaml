@@ -331,3 +331,21 @@ cilium:
           memory: 100Mi
         limits:
           memory: 100Mi
+
+# Velero
+velero:
+  name: velero
+  namespace: velero
+  chart:
+    name: velero
+    version: 11.0.0
+  repository:
+    url: https://vmware-tanzu.github.io/helm-charts
+  values:
+    resources:
+      requests:
+        cpu: 500m
+        memory: 128Mi
+      limits:
+        cpu: 1000m
+        memory: 512MiB
