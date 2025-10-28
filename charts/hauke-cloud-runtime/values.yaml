@@ -406,8 +406,8 @@ descheduler:
                 - RemovePodsViolatingInterPodAntiAffinity
 
 # Bookmarks
-bookmarks:
-  name: bookmarks
+bookmark-generator:
+  name: bookmark-generator
   namespace: bookmarks
   enabled: false
   chart:
