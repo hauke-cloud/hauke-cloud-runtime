@@ -412,7 +412,7 @@ bookmark-generator:
   enabled: false
   chart:
     name: bookmark-generator
-    version: 0.0.2
+    version: 0.0.3
   repository:
     url: oci://ghcr.io/hauke-cloud/charts
     type: oci
