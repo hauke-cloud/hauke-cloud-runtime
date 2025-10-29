@@ -62,6 +62,8 @@ trustManager:
   values:
     secretTargets:
       enabled: true
+      authorizedSecrets:
+        - internal-ca-bundle
     defaultPackage:
       resources:
         requests:
