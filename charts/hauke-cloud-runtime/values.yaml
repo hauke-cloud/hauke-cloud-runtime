@@ -456,7 +456,7 @@ bookmark-generator:
       limits:
 
 # ceph
-ceph:
+cephRook:
   name: ceph-rook
   namespace: kube-system
   enabled: false
