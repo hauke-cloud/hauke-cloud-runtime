@@ -454,4 +454,14 @@ bookmark-generator:
         cpu: 100m
         memory: 64Mi
       limits:
-        memory: 128Mi
+
+# ceph
+ceph:
+  name: ceph-rook
+  namespace: kube-system
+  enabled: false
+  chart:
+    name: rook-ceph
+    version: 1.18.8
+  repository:
+    url: https://charts.rook.io/release
