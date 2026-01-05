@@ -455,10 +455,10 @@ bookmark-generator:
         memory: 64Mi
       limits:
 
-# ceph
+# Ceph
 cephRook:
   name: ceph-rook
-  namespace: kube-system
+  namespace: storage
   enabled: false
   chart:
     name: rook-ceph
