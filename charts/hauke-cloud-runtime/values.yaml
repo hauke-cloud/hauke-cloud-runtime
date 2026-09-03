@@ -139,9 +139,9 @@ sealedSecrets:
   enabled: true
   chart:
     name: sealed-secrets
-    version: 2.17.4
+    version: 2.19.3
   repository:
-    url: https://bitnami-labs.github.io/sealed-secrets
+    url: https://bitnami.github.io/sealed-secrets
   values:
     resources:
       requests:
