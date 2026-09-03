@@ -13,7 +13,7 @@ certManager:
   enabled: true
   chart:
     name: cert-manager
-    version: 1.19.0
+    version: 1.21.1
   repository:
     name: jetstack
     url: https://charts.jetstack.io
@@ -55,7 +55,7 @@ trustManager:
   enabled: true
   chart:
     name: trust-manager
-    version: 0.20.2
+    version: 0.24.0
   repository:
     name: jetstack
     url: https://charts.jetstack.io
@@ -87,7 +87,7 @@ externalDNS:
   enabled: true
   chart:
     name: external-dns
-    version: 1.18.0
+    version: 1.21.1
   repository:
     name: kubernetes-sigs
     url: https://kubernetes-sigs.github.io/external-dns/
@@ -107,7 +107,7 @@ externalSecrets:
   enabled: false
   chart:
     name: external-secrets
-    version: 0.16.2
+    version: 2.10.0
   repository:
     url: https://charts.external-secrets.io
   values:
@@ -157,7 +157,7 @@ ingress:
   enabled: true
   chart:
     name: ingress-nginx
-    version: 4.13.3
+    version: 4.15.1
   repository:
     url: https://kubernetes.github.io/ingress-nginx
   values:
@@ -194,7 +194,7 @@ opencost:
   enabled: false
   chart:
     name: opencost
-    version: 2.3.1
+    version: 2.5.30
   repository:
     url: https://opencost.github.io/opencost-helm-chart
 
@@ -205,7 +205,7 @@ hetznerCSI:
   enabled: false
   chart:
     name: hcloud-csi
-    version: 2.18.0
+    version: 2.23.0
   repository:
     url: https://charts.hetzner.cloud
   values:
@@ -270,7 +270,7 @@ metricsServer:
   enabled: true
   chart:
     name: metrics-server
-    version: 3.13.0
+    version: 3.14.0
   repository:
     url: https://kubernetes-sigs.github.io/metrics-server
   values:
@@ -289,7 +289,7 @@ hetznerCloudControllerManager:
   enabled: false
   chart:
     name: hcloud-cloud-controller-manager
-    version: 1.27.0
+    version: 1.36.0
   repository:
     url: https://charts.hetzner.cloud
   value:
@@ -308,7 +308,7 @@ cilium:
   enabled: false
   chart:
     name: cilium
-    version: 1.18.2
+    version: 1.20.1
   repository:
     url: https://helm.cilium.io
   values:
@@ -371,7 +371,7 @@ velero:
   enabled: false
   chart:
     name: velero
-    version: 12.0.2
+    version: 12.1.0
   repository:
     url: https://vmware-tanzu.github.io/helm-charts
   values:
@@ -389,7 +389,7 @@ descheduler:
   enabled: true
   chart:
     name: descheduler
-    version: 0.33.0
+    version: 0.36.0
   repository:
     url: https://kubernetes-sigs.github.io/descheduler
   values:
@@ -462,6 +462,6 @@ cephRook:
   enabled: false
   chart:
     name: rook-ceph
-    version: 1.18.8
+    version: 1.20.7
   repository:
     url: https://charts.rook.io/release
