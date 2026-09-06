@@ -72,6 +72,71 @@ helm install hauke-cloud-runtime oci://ghcr.io/hauke-cloud/charts/hauke-cloud-ru
 
 
 
+## :satellite: Envoy Gateway (Gateway API)
+
+`envoyGateway` installs [Envoy Gateway](https://gateway.envoyproxy.io/) as the
+Gateway API replacement for the `ingress` (ingress-nginx) component. Both can be
+enabled at once, so an Ingress keeps serving traffic while its HTTPRoute is
+added, and `ingress.enabled` is only set to `false` once every route has moved.
+
+Enabling it does three things:
+
+1. A `HelmRelease` installs `gateway-helm`, which brings the Envoy Gateway CRDs
+   **and** the upstream Gateway API CRDs with it.
+2. A `GatewayClass` (`envoyGateway.gatewayAPI.gatewayClass`) plus the
+   `EnvoyProxy` it points at through `parametersRef`. The `EnvoyProxy` is where
+   the data plane is configured -- its `envoyService` is the LoadBalancer that
+   takes over from the ingress-nginx controller Service.
+3. One `Gateway` per entry in `envoyGateway.gatewayAPI.gateways`.
+
+```yaml
+envoyGateway:
+  enabled: true
+  gatewayAPI:
+    gateways:
+      - name: hauke-cloud
+        annotations:
+          cert-manager.io/cluster-issuer: hauke-cloud
+        listeners:
+          - name: http
+            protocol: HTTP
+            port: 80
+            allowedRoutes:
+              namespaces:
+                from: All
+          - name: https-example
+            protocol: HTTPS
+            port: 443
+            hostname: "*.example.com"
+            allowedRoutes:
+              namespaces:
+                from: All
+            tls:
+              mode: Terminate
+              certificateRefs:
+                - kind: Secret
+                  name: wildcard-example-com-tls
+```
+
+### The GatewayClass and Gateways appear on the second reconcile
+
+Items 2 and 3 are rendered by *this* chart but need the CRDs that item 1
+installs, so they are guarded by a capability check and skipped while those CRDs
+are missing. Flux picks them up on the next reconcile once Envoy Gateway is
+running. Set `envoyGateway.gatewayAPI.skipCapabilityCheck: true` to render them
+unconditionally, which is what `helm template` runs need.
+
+### Certificates and DNS
+
+- **cert-manager** issues a certificate per HTTPS listener from the Gateway's
+  `cert-manager.io/cluster-issuer` annotation, but only with its Gateway API
+  support switched on -- see the commented `config.gatewayAPI` block under
+  `certManager.values`. Do not enable it before the Gateway API CRDs exist;
+  cert-manager fails to start without them.
+- **external-dns** needs `gateway-httproute` added to `externalDNS.values.sources`
+  next to `ingress`, so hostnames keep resolving from both while routes migrate.
+
+
 ## 📄 License
 
 This Project is licensed under the GNU General Public License v3.0

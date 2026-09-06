@@ -47,6 +47,15 @@ certManager:
           memory: 96Mi
     crds:
       enabled: true
+    # cert-manager can issue the certificates a Gateway's HTTPS listeners
+    # reference, the same way it does for Ingress TLS. Turn this on together
+    # with `envoyGateway.enabled` -- cert-manager fails to start when it is set
+    # without the Gateway API CRDs present.
+    # config:
+    #   apiVersion: controller.config.cert-manager.io/v1alpha1
+    #   kind: ControllerConfiguration
+    #   gatewayAPI:
+    #     enabled: true
 
 # Trust Manager
 trustManager:
@@ -93,6 +102,9 @@ externalDNS:
     url: https://kubernetes-sigs.github.io/external-dns/
   values:
     triggerLoopOnEvent: true
+    # Add `gateway-httproute` (and `gateway-grpcroute`, `gateway-tlsroute` as
+    # needed) to `sources` alongside `ingress` so hostnames keep resolving while
+    # routes move from Ingress to HTTPRoute.
     resources:
       requests:
         cpu: 50m
@@ -151,6 +163,8 @@ sealedSecrets:
         memory: 256Mi
 
 # Nginx Ingress Controller
+# Superseded by `envoyGateway` below. Keep both enabled during a migration and
+# disable this once every Ingress has an HTTPRoute equivalent.
 ingress:
   name: ingress
   namespace: ingress
@@ -174,6 +188,108 @@ ingress:
       service:
         annotations:
           load-balancer.hetzner.cloud/location: nbg1
+
+# Envoy Gateway
+# The Gateway API replacement for the Nginx ingress controller above. Both can
+# run side by side: an Ingress keeps working while its HTTPRoute is added, and
+# `ingress.enabled` is only turned off once every route has moved over.
+envoyGateway:
+  name: envoy-gateway
+  namespace: envoy-gateway
+  enabled: false
+  chart:
+    name: gateway-helm
+    version: 1.9.1
+  repository:
+    url: oci://docker.io/envoyproxy
+    type: oci
+  values:
+    # Ships both the Envoy Gateway CRDs and the upstream Gateway API CRDs.
+    # Set to false only when something else already manages them.
+    crds:
+      enabled: true
+    deployment:
+      envoyGateway:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 512Mi
+    certgen:
+      job:
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            memory: 96Mi
+
+  # Everything below is rendered by this chart rather than by gateway-helm, so
+  # it needs the Gateway API CRDs the HelmRelease above installs. Until those
+  # exist the resources are skipped, which means they appear on the second
+  # reconcile rather than the first. Set `skipCapabilityCheck` to render them
+  # unconditionally, e.g. when templating offline.
+  gatewayAPI:
+    skipCapabilityCheck: false
+
+    gatewayClass:
+      enabled: true
+      name: envoy
+      annotations: {}
+      # EnvoyProxy resource attached to the GatewayClass through parametersRef.
+      # This is where the data plane -- the Service that replaces the
+      # ingress-nginx controller Service -- is configured.
+      parameters:
+        enabled: true
+        name: envoy-proxy-config
+        spec:
+          provider:
+            type: Kubernetes
+            kubernetes:
+              envoyService:
+                type: LoadBalancer
+                annotations:
+                  load-balancer.hetzner.cloud/location: nbg1
+              envoyDeployment:
+                replicas: 2
+                container:
+                  resources:
+                    requests:
+                      cpu: 100m
+                      memory: 128Mi
+                    limits:
+                      memory: 512Mi
+
+    # Gateways to create. Each listener that terminates TLS needs a certificate;
+    # annotating the Gateway with a cert-manager issuer lets cert-manager's
+    # Gateway support issue one per listener, which needs
+    # `certManager.values.config.gatewayAPI.enabled` set to true.
+    gateways: []
+    # - name: hauke-cloud
+    #   # Defaults to envoyGateway.namespace.
+    #   namespace: envoy-gateway
+    #   annotations:
+    #     cert-manager.io/cluster-issuer: hauke-cloud
+    #   listeners:
+    #     - name: http
+    #       protocol: HTTP
+    #       port: 80
+    #       allowedRoutes:
+    #         namespaces:
+    #           from: All
+    #     - name: https
+    #       protocol: HTTPS
+    #       port: 443
+    #       hostname: "*.example.com"
+    #       allowedRoutes:
+    #         namespaces:
+    #           from: All
+    #       tls:
+    #         mode: Terminate
+    #         certificateRefs:
+    #           - kind: Secret
+    #             name: wildcard-example-com-tls
 
 # Reflector
 reflector:

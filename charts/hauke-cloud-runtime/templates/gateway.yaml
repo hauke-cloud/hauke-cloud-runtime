@@ -1,0 +1,76 @@
+{{- $eg := .Values.envoyGateway | default dict -}}
+{{- if $eg.enabled -}}
+{{- $api := $eg.gatewayAPI | default dict -}}
+{{- $skip := $api.skipCapabilityCheck | default false -}}
+{{- $hasGatewayAPI := or $skip (.Capabilities.APIVersions.Has "gateway.networking.k8s.io/v1") -}}
+{{- $hasEnvoyAPI := or $skip (.Capabilities.APIVersions.Has "gateway.envoyproxy.io/v1alpha1") -}}
+{{- $class := $api.gatewayClass | default dict -}}
+{{- $params := $class.parameters | default dict -}}
+{{- $className := $class.name | default "envoy" -}}
+{{- $paramsName := $params.name | default (printf "%s-parameters" $className) -}}
+{{- if and $class.enabled $params.enabled $hasEnvoyAPI }}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: {{ $paramsName }}
+  namespace: {{ $eg.namespace }}
+  labels:
+    {{- include "hauke-cloud-runtime.labels" $ | nindent 4 }}
+spec:
+  {{- toYaml ($params.spec | default dict) | nindent 2 }}
+{{- end }}
+{{- if and $class.enabled $hasGatewayAPI }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: {{ $className }}
+  labels:
+    {{- include "hauke-cloud-runtime.labels" $ | nindent 4 }}
+  {{- with $class.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  controllerName: {{ $class.controllerName | default "gateway.envoyproxy.io/gatewayclass-controller" }}
+  {{- if $params.enabled }}
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: {{ $paramsName }}
+    namespace: {{ $eg.namespace }}
+  {{- end }}
+{{- end }}
+{{- if $hasGatewayAPI }}
+{{- range $api.gateways | default list }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ .name }}
+  namespace: {{ .namespace | default $eg.namespace }}
+  labels:
+    {{- include "hauke-cloud-runtime.labels" $ | nindent 4 }}
+    {{- with .labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  gatewayClassName: {{ .gatewayClassName | default $className }}
+  {{- with .addresses }}
+  addresses:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .infrastructure }}
+  infrastructure:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  listeners:
+    {{- toYaml .listeners | nindent 4 }}
+{{- end }}
+{{- end }}
+{{- end }}
