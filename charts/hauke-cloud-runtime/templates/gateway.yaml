@@ -69,6 +69,10 @@ spec:
   infrastructure:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- with .allowedListeners }}
+  allowedListeners:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   listeners:
     {{- toYaml .listeners | nindent 4 }}
 {{- end }}
